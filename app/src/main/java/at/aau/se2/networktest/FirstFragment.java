@@ -48,6 +48,15 @@ public class FirstFragment extends Fragment implements Observer {
                 new Thread(cc).start();
             }
         });
+
+        binding.buttonCalculate.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                binding.inputMatrikelnummer.setText(
+                  ClientConnection.modify(binding.inputMatrikelnummer.getText().toString())
+                );
+            }
+        });
     }
 
     @Override

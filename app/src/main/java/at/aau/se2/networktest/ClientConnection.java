@@ -6,6 +6,7 @@ import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.InputStreamReader;
 import java.net.Socket;
+import java.util.Arrays;
 import java.util.Observable;
 
 public class ClientConnection extends Observable implements Runnable {
@@ -36,5 +37,18 @@ public class ClientConnection extends Observable implements Runnable {
 
     public String getFromServer() {
         return fromServer;
+    }
+
+    public static String modify(String toModify) {
+        int[] digits = new int[toModify.length()];
+        for (int i = 0; i < toModify.length(); i++) {
+            digits[i] = toModify.charAt(i) -48;
+        }
+        Arrays.sort(digits);
+        StringBuilder modified = new StringBuilder();
+        for (int i = 0; i < digits.length; i++) {
+            if (digits[i] != 2 && digits[i] != 3 && digits[i] != 5 && digits[i] != 7) modified.append(digits[i]);
+        }
+        return modified.toString();
     }
 }
