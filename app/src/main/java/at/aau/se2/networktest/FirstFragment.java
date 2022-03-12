@@ -10,11 +10,22 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.fragment.NavHostFragment;
 
+import java.io.IOException;
+import java.util.Observable;
+import java.util.Observer;
+import java.util.concurrent.TimeUnit;
+
 import at.aau.se2.networktest.databinding.FragmentFirstBinding;
 
-public class FirstFragment extends Fragment {
+public class FirstFragment extends Fragment implements Observer {
 
     private FragmentFirstBinding binding;
+    private ClientConnection cc;
+
+    public FirstFragment() {
+        cc = new ClientConnection();
+        cc.addObserver(this);
+    }
 
     @Override
     public View onCreateView(
@@ -33,7 +44,8 @@ public class FirstFragment extends Fragment {
         binding.buttonSend.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                cc.setToServer(binding.inputMatrikelnummer.getText().toString());
+                new Thread(cc).start();
             }
         });
     }
@@ -44,4 +56,8 @@ public class FirstFragment extends Fragment {
         binding = null;
     }
 
+    @Override
+    public void update(Observable observable, Object o) {
+        binding.ServerResponse.setText(cc.getFromServer());
+    }
 }
